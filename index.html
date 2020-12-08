@@ -21,6 +21,10 @@
 			font-family: 'Merriweather Sans', Sans-Serif;
 		}
 
+		header {
+			background-color:#0033A0;
+		}
+
 		h1 {
 			Font-Family: 'Catamaran', Sans-Serif;
 			font-weight: 800;
@@ -36,10 +40,23 @@
 			line-height: 1.4rem;
 			font-size: .8em;
 		}
+		
+		a {
+			color: #FFDC00;
+		}
 
-		li {
+		a:hover {
+			color: #FFA360;
+		}
+
+		footer {
 			Font-Family: 'Merriweather Sans', Sans-Serif;
 			line-height: 1.4rem;
+			background-color:#0033A0;
+		}
+
+		#about {
+			background-color: #f8f8f4;
 		}
 
 		#map {
@@ -127,7 +144,7 @@
 
 <body>
 	<div class="container-fluid">
-		<header class="row bg-dark text-white py-3">
+		<header class="row text-white py-3">
 			<div class="col">
 				<h1>Campus Expansion through the Decades</h1>
 			</div>
@@ -152,7 +169,7 @@
 				</div>
 			</div>
 			<aside id="about"
-				class="col-md-4 col-lg-3 col-xl-2 order-md-1 text-white py-2 pl-3 bg-secondary overflow-auto">
+				class="col-md-4 col-lg-3 col-xl-2 order-md-1 text-dark py-2 pl-3 overflow-auto">
 				<section>
 					<h3 class="py-2">University of Kentucky Building History (1865-2020)</h3>
 					<p>A fan brush is a fantastic piece of equipment. Use it. Make friends with it. We're not trying to
@@ -170,7 +187,7 @@
 			</aside>
 		</section>
 
-		<footer class="row bg-dark text-white py-3">
+		<footer class="row text-white py-3">
 			<div class="col">
 				<ul class="list-unstyled">
 					<li>Authored by <a href="https://jmfr236.github.io/">Jessica Freeman</a></li>
@@ -199,14 +216,16 @@
 	<script>
 	
 	// initialize map, centered on Lexington, KY
-	var map = L.map('map', {
+	const options = {
     zoomSnap: .1,
     center: [38.027, -84.504],
     zoom: 14,
     minZoom: 12,
     maxZoom: 18,
     maxBounds: L.latLngBounds([38.066, -84.547], [37.996, -84.454])
-	});
+	};
+
+	const map = L.map('map', options);
 
 	// mapbox API access Token
 	// mapbox API parameters
@@ -223,15 +242,54 @@
 		// move zoom control to the bottom right
 		//new L.control.zoom({position:"bottomright"}).addTo(map)
 
-		// create object to hold legend titles
-		const labels = {
-			"BuildingNa": "Building Name",
-			"Address": "Address",
-			"MaintGroup": "Maintenance Group",
-			"eBARS_BldgInfo eBARSBuildingView_AcquisitionDate": "Acquisition Date",
-			"eBARS_BldgInfo eBARSBuildingView_ConstructionYear": "Construction Date"
-		}
+	// create object to hold legend titles
+	const labels = {
+		"BuildingNa": "Building Name",
+		"Address": "Address",
+		"MaintGroup": "Maintenance Group",
+		"eBARS_BldgInfo eBARSBuildingView_AcquisitionDate": "Acquisition Date",
+		"eBARS_BldgInfo eBARSBuildingView_ConstructionYear": "Construction Date"
+	}
 
+	$.getJSON("data/UK_Building_Facility.geojson", function (data) {
+		console.log(data);
+		drawMap(data);
+	});
+
+	function drawMap(data) {
+		console.log(data);
+		const buildingLayer = L.geoJSON(data).addTo(map);
+
+	}
+
+function updateMap(buildingLayer, currentYear) {
+
+}
+
+//function createSliderUI(buildingLayer, currentYear){
+// create Leaflet control for the slider
+const sliderControl = L.control({ position: 'bottomleft'} );
+
+// when added to the map
+sliderControl.onAdd = function(map) {
+
+    // select an existing DOM element with an id of "ui-controls"
+    const slider = L.DomUtil.get("ui-controls");
+
+    // disable scrolling of map while using controls
+    L.DomEvent.disableScrollPropagation(slider);
+
+    // disable click events while using controls
+    L.DomEvent.disableClickPropagation(slider);
+
+    // return the slider from the onAdd method
+    return slider;
+}
+
+// add the control to the map
+sliderControl.addTo(map);
+
+/*
 		const buildingLayer = $.getJSON("data/UK_Building_Facility.json", function (data) {
 			// jQuery method uses AJAX request for the GeoJSON data
 			
@@ -268,19 +326,20 @@
 				},
 			}).addTo(map);
 
-			/*// call addUi function
+			// call addUi function
 			addUi(buildings); // add the UI controls
 
 			// call updateMap function
 			updateMap(buildings); // draw the map*/
 
 			// call draw map function and send data as parameter
-			drawMap(data);
-		});
-		
+			//drawMap(data);
+		//});
+		/*
 		function drawMap(data) {
 			console.log(data); // data os now accessible here
 		}
+	
 
 		/*function updateMap(counties) {
   			// you could log counties to console here to 
