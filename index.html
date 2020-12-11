@@ -14,8 +14,8 @@
 		crossorigin="" />
 	<!-- Fonts -->
 	<link href="https://fonts.googleapis.com/css?family=Catamaran:600|Merriweather+Sans:300" rel="stylesheet">
+	
 	<style>
-
 		body {
 			background: #20282e;
 			font-family: 'Merriweather Sans', Sans-Serif;
@@ -215,16 +215,17 @@
 		crossorigin=""></script>
 	<script>
 	
-	// initialize map, centered on Lexington, KY
+	// map options, centered on Lexington, KY
 	const options = {
-    zoomSnap: .1,
-    center: [38.027, -84.504],
-    zoom: 14,
-    minZoom: 12,
-    maxZoom: 18,
-    maxBounds: L.latLngBounds([38.066, -84.547], [37.996, -84.454])
+		zoomSnap: .1,
+		center: [38.027, -84.504],
+		zoom: 14,
+		minZoom: 12,
+		maxZoom: 18,
+		maxBounds: L.latLngBounds([38.066, -84.547], [37.996, -84.454])
 	};
 
+	// create the Leaflet map
 	const map = L.map('map', options);
 
 	// mapbox API access Token
@@ -251,18 +252,29 @@
 		"eBARS_BldgInfo eBARSBuildingView_ConstructionYear": "Construction Date"
 	}
 
-	$.getJSON("data/UK_Building_Facility.geojson", function (data) {
+	const buildings = $.getJSON("data/UK_Building_Facility.geojson", function (data) {
 		console.log(data);
-		drawMap(data);
+		var dataLayer = L.geoJson(data, {
+			style: function (feature) {
+				return {
+				color: '#20282e',
+				weight: 1,
+				fillOpacity: 1,
+				fillColor: "#1f78b4",
+				};
+			},
+		}); 
+		// var zoomExtent = dataLayer.getBounds();
+		dataLayer.addTo(map);
+		drawMap(dataLayer);
 	});
-
-	function drawMap(data) {
-		console.log(data);
-		const buildingLayer = L.geoJSON(data).addTo(map);
+	
+	console.log(buildings)
+	function drawMap(dataLayer) {
 
 	}
 
-function updateMap(buildingLayer, currentYear) {
+function updateMap(dataLayer, currentYear) {
 
 }
 
