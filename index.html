@@ -252,14 +252,14 @@
 		"eBARS_BldgInfo eBARSBuildingView_ConstructionYear": "Construction Date"
 	}
 
-	const buildings = $.getJSON("data/UK_Building_Facility.geojson", function (data) {
+	const buildings = $.getJSON("data/uk_property.geojson", function (data) {
 		console.log(data);
-		var dataLayer = L.geoJson(data, {
+		const dataLayer = L.geoJson(data, {
 			style: function (feature) {
 				return {
 				color: '#20282e',
 				weight: 1,
-				fillOpacity: 1,
+				fillOpacity: .75,
 				fillColor: "#1f78b4",
 				};
 			},
