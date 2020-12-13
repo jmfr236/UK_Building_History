@@ -219,7 +219,7 @@
 	const options = {
 		zoomSnap: .1,
 		center: [38.027, -84.504],
-		zoom: 14,
+		zoom: 14.5,
 		minZoom: 12,
 		maxZoom: 18,
 		maxBounds: L.latLngBounds([38.066, -84.547], [37.996, -84.454])
@@ -252,7 +252,20 @@
 		"eBARS_BldgInfo eBARSBuildingView_ConstructionYear": "Construction Date"
 	}
 
-	const buildings = $.getJSON("data/uk_property.geojson", function (data) {
+const property = $.getJSON("data/uk_property.geojson", function (data) {
+	const propLayer = L.geoJson(data, {
+		style: function (feature) {
+			return {
+				color: 'black',
+				weight: 1,
+				dashArray: '2',
+				fillColor: 'none',
+			};
+		},
+	}).addTo(map);
+});
+
+	const buildings = $.getJSON("data/uk_buildings.geojson", function (data) {
 		console.log(data);
 		const dataLayer = L.geoJson(data, {
 			style: function (feature) {
@@ -266,13 +279,13 @@
 		}); 
 		// var zoomExtent = dataLayer.getBounds();
 		dataLayer.addTo(map);
-		drawMap(dataLayer);
+		//drawMap(dataLayer);
 	});
 	
 	console.log(buildings)
-	function drawMap(dataLayer) {
+	//function drawMap(dataLayer) {
 
-	}
+	//}
 
 function updateMap(dataLayer, currentYear) {
 
