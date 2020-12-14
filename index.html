@@ -41,6 +41,12 @@
 			font-size: .8em;
 		}
 		
+		h2 {
+			Font-Family: 'Merriweather Sans', Sans-Serif;
+			font-size: .6em;
+			font-style: italic 
+		}
+
 		a {
 			color: #FFDC00;
 		}
@@ -55,6 +61,14 @@
 			background-image: linear-gradient(to left,#0033A0,#1B365D)
 		}
 
+		label {
+			font-size: 1.1em;
+		}
+
+		li {
+			font-size: .8em;
+			text-align: right;
+		}	
 		#about {
 			background-color: #f8f8f4;
 		}
@@ -104,6 +118,16 @@
 			color: whitesmoke;
 		}
 
+		#year {
+			width: 135px;
+			padding: 8px 8px 8px 8px;
+			background:#1B365D;
+			opacity: .75;
+			box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+			border-radius: 5px;
+			color: whitesmoke;
+		}
+
 		#ui-controls .min {
 			float: left;
 		}
@@ -115,11 +139,6 @@
 
 		.year-slider {
 			width: 100%;
-		}
-
-		label {
-			font-size: 1.1em;
-			font-weight: bold;
 		}
 
 		/* Small devices (landscape phones, 576px and up) */
@@ -151,7 +170,7 @@
 		</header>
 
 		<section class="row">
-			<div class="col-md-8 col-lg-9 col-xl-10 order-md-2 px-0">
+			<div class="col-md-9 col-lg-9 col-xl-9 order-md-2 px-0">
 				<div id="map">
 				<div id="ui" class="dropdown">
 					<a class="btn btn-light text-secondary font-weight-bold dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
@@ -166,22 +185,39 @@
 						value="2020", step="10" class="year-slider" ></input>
 					</label>  
 				</div>
+				<!-- ui grade level -->
+				<div id='year' class="text-light font-weight-bold">
+					<label><img src="graphics/dashed-line.png" width="20px" height="20px"> UK Property</br>
+					</br>
+						Year Display: <span>2020</span></label>
+				</div>
 				</div>
 			</div>
 			<aside id="about"
-				class="col-md-4 col-lg-3 col-xl-2 order-md-1 text-dark py-2 pl-3 overflow-auto">
+				class="col-md-3 col-lg-3 col-xl-3 order-md-1 text-dark py-2 pl-3 overflow-auto">
 				<section>
 					<h3 class="py-2">University of Kentucky Building History (1865-2020)</h3>
-					<p>A fan brush is a fantastic piece of equipment. Use it. Make friends with it. We're not trying to
-						teach you
-						a thing to copy. We're just here to teach you a technique, then let you loose into the world.
-						We'll put a
-						happy little sky in here.</p>
-					<p>You are only limited by your imagination. We'll do another happy little painting. Work on one
-						thing at a
-						time. Don't get carried away - we have plenty of time. Look at them little rascals. We'll put
-						all the little
-						clouds in and let them dance around and have fun. You can spend all day playing with mountains.
+					<p>Travel back through time and get a glimpse of the University of Kentucky (UK) campus. 
+						Use this map to	explore building construction, acquisition, and historical 
+						trends in usage and campus planning. This map lays out the building history 
+						on UK Campus as it exists today, with only existing structures (buildings that
+						have been demolished are not shown). 
+					<p>UK was first established as a land-grant	institution in 1865. It wasn't until 1880 
+						that UK started development at its current location off of South Limestone in 
+						Lexington, Kentucky. The campus initially comprised of three buildings, only one 
+						of which still remains - UK Main Building (1882).</br>
+					<p></p>
+					<a href="https://exploreuk.uky.edu/fa/findingaid/?id=xt7f4q7qpg4w">
+						<img src="https://exploreuk.uky.edu/dips/xt7f4q7qpg4w/data/2001ua068/2001ua068_1/2001ua068_1_13_p/2001ua068_01_013/2001ua068_01_013.jpg" 
+						alt="Main Administration Building" class="col-md-12 "></a>
+					<h2 class="col-md-12 ">Photo of Main Administration Building. Provided by exploreUK, 
+						clicking the image will take you to a collection of UK postcards. </h2>
+					<p>After scrolling through the time slider you will notice there are several buildings 
+						that were constructed in earlier years, and later acquired by the University as campus 
+						expanded. The oldest structure on campus is actually 206 E Maxwell St. - built in 1853
+						and acquired by the University in 1994. By selecting from the dropdown options, you can
+						also filter and examine key trends based on buildings usage type (housing, medical, 
+						campus, etc.).</br>
 					</p>
 				</section>
 			</aside>
@@ -190,9 +226,10 @@
 		<footer class="row text-white py-3">
 			<div class="col">
 				<ul class="list-unstyled">
-					<li>Authored by <a href="https://jmfr236.github.io/">Jessica Freeman</a></li>
-					<li>Date: December 2020</li>
-					<li>Data Source: Building data was provided from the University of Kentucky <a href="https://www.uky.edu/gissupport/data">ITS Information Services Department</a></li>
+					<h2 align="right">This product is not affiliated or sponsored by the University of Kentucky</h2>
+					<li>Authored by <a href="https://jmfr236.github.io/">Jessica Freeman</a>, December 2020</li>
+					<li>Building Data Source: University of Kentucky <a href="https://www.uky.edu/gissupport/data">ITS Information Services Department</a></li>
+					<li>Historic Reference Source: University of Kentucky <a href="https://www.uky.edu/uk150/history">History - UK150</a></li>
 				</ul>
 			</div>
 		</footer>
@@ -213,6 +250,8 @@
 	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
 		integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
 		crossorigin=""></script>
+	<!-- then jQuery slider -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>
 	
 	// map options, centered on Lexington, KY
@@ -243,15 +282,7 @@
 		// move zoom control to the bottom right
 		//new L.control.zoom({position:"bottomright"}).addTo(map)
 
-	// create object to hold legend titles
-	const labels = {
-		"BuildingNa": "Building Name",
-		"Address": "Address",
-		"MaintGroup": "Maintenance Group",
-		"eBARS_BldgInfo eBARSBuildingView_AcquisitionDate": "Acquisition Date",
-		"eBARS_BldgInfo eBARSBuildingView_ConstructionYear": "Construction Date"
-	}
-
+	//add 2020 UK property boundary layer
 	const property = $.getJSON("data/uk_property.geojson", function (data) {
 		const propLayer = L.geoJson(data, {
 			style: function (feature) {
@@ -265,9 +296,10 @@
 		}).addTo(map);
 	});
 
-	const buildings = $.getJSON("data/uk_buildings.geojson", function (data) {
-		console.log(data);
-		const dataLayer = L.geoJson(data, {
+	// add UK buildings layer
+	$.getJSON("data/uk_buildings.geojson", function (buildings) {
+		console.log(buildings);
+		/* const dataLayer = L.geoJson(buildings, {
 			style: function (feature) {
 				return {
 				color: '#20282e',
@@ -278,84 +310,133 @@
 			},
 		}); 
 		// var zoomExtent = dataLayer.getBounds();
-		dataLayer.addTo(map);
-		drawMap(dataLayer);
+		dataLayer.addTo(map);*/
+		drawMap(buildings); 
 	});
 	
 
-	function drawMap(dataLayer) {
-      //create the slider
-      createSliderUI(dataLayer);
+	function drawMap(buildings) {
+		console.log(buildings);
+		const dataLayer = L.geoJson(buildings, {
+			style: function (feature) {
+				return {
+				color: '#20282e',
+				weight: 1,
+				fillOpacity: .75,
+				fillColor: "#1f78b4",
+				};
+			},
+		}).addTo(map); 
+		// var zoomExtent = dataLayer.getBounds();
 
-      // call the initially color the map with first timestamp
-	  updateMap(dataLayer,'2020');
-	  
-	  filterByAttribute(dataLayer);
+		//create the slider
+		// filterByAttribute(dataLayer, buildings);
+		createSliderUI(dataLayer);
+		console.log(dataLayer);
+      	// call the initially color the map with first timestamp
+		updateMap(dataLayer,'2020');
     }
-
 
     function updateMap(dataLayer, currentYear) {
     	// loop through each county layer to update the color 
-			dataLayer.eachLayer(function (layer) {
+		dataLayer.eachLayer(function (layer) {
 
         const props = layer.feature.properties;
 
         // build the tooltip 
-		const tooltip = `<c><p><b><u>${props['GIS_MAPB_2']}</u></b><br/>
+		const tooltip = `<p align="center"><label><b><u>${props['GIS_MAPB_2']}  (#${props['BuildingID']})</u></b><br/>
 		${props['GIS_MAPB_4']}, Lexington, KY ${props['GIS_MAPB_5']}<br/>
 		<b>Maintenance Area:</b> ${props['GIS_MAPB_9']}<br/>
 		<b>Constructed:</b> ${props['UK_Build_3']}<br/>
 		<b>Acquired:</b> ${props['UK_Build_4']}<br/></p>
-		HOLD PHOTO</c>`
+		<img class="col-md-12" src="https://maps.uky.edu/campusmap/bldg/${props['BuildingID']}.jpg"</label></p>`
 		// Set up formula to if only show acquired if constructed and acquired are not the same
 
         //bind the tooltup to the layer
         layer.bindTooltip(tooltip, {
-          sticky: true
-        }); 
-      });
-    } // end updateMap()
+			sticky: true
+		}); 
 
-function createSliderUI(dataLayer, currentYear) {
+		layer.on("mouseover", function () {
+                    layer.bringToFront();
+                    layer.setStyle({
+                        color: "yellow",
+                        weight: 2,
+                    });
+                });
+
+                layer.on("mouseout", function () {
+                    layer.bringToBack();
+                    layer.setStyle({
+						color: '#20282e',
+						weight: 1,
+						fillOpacity: .75,
+						fillColor: "#1f78b4",
+                    });
+                });
+		});
+	};
+ // end updateMap()
+
+	function createSliderUI(dataLayer) {
       // create Leaflet control for the slider
-      const sliderControl = L.control({ position: 'bottomleft'} );
+		const sliderControl = L.control({ 
+			position: 'bottomleft'
+		});
 
       // when added to the map
-      sliderControl.onAdd = function(map) {
+		sliderControl.onAdd = function(map) {
 
-          // select an existing DOM element with an id of "ui-controls"
-          const slider = L.DomUtil.get("ui-controls");
+			// select an existing DOM element with an id of "ui-controls"
+			const slider = L.DomUtil.get("ui-controls");
 
-          // disable scrolling of map while using controls
-          L.DomEvent.disableScrollPropagation(slider);
+			// disable scrolling of map while using controls
+			L.DomEvent.disableScrollPropagation(slider);
 
-          // disable click events while using controls
-          L.DomEvent.disableClickPropagation(slider);
+			// disable click events while using controls
+			L.DomEvent.disableClickPropagation(slider);
 
-          // return the slider from the onAdd method
-          return slider;
-      }
+			// return the slider from the onAdd method
+			return slider;
+		}
 
-      // add the control to the map
-      sliderControl.addTo(map);
+    	// add the control to the map
+		sliderControl.addTo(map);
+
+		var yearControl = L.control({
+			position: 'bottomleft'
+		});
+
+		yearControl.onAdd = function (map) {
+
+			var controls = L.DomUtil.get("year");
+
+			L.DomEvent.disableScrollPropagation(controls);
+			L.DomEvent.disableClickPropagation(controls);
+
+			return controls;
+
+		}
+
+		yearControl.addTo(map);
 
       // select the form element
-      $(".year-slider")
-          .on("input change", function() { // when user changes
-              const currentYear = $(this).val(); // update the year
-              $('.legend h3 span').html(currentYear); // update the map with current timestamp
-              updateMap(dataLayer, currentYear); // update timestamp in legend heading
-          });
-	} // end createSliderUI()
+		$(".year-slider")
+        	.on("input change", function() { // when user changes
+				const currentYear = $(this).val(); // update the year
+				$('.legend h3 span').html(currentYear); // update the map with current timestamp
+				updateMap(dataLayer, currentYear); // update timestamp in legend heading
+        	});
+	} // end createSliderUI() */
 	
-	function filterByAttribute(facilityData, facilities) {
+	/* function filterByAttribute(dataLayer, buildings) {
 	// array to hold select options
 	var uniqueTypes = [];
 
 	// loop through all features and push unique types to array
-	facilityData.forEach(function (facility) {
-	if (!uniqueTypes.includes(facility.Industry_Type)) {
-		uniqueTypes.push(facility.Industry_Type);
+	dataLayer.forEach(function (maint) {
+	if (!uniqueTypes.includes(maint.GIS_MAPB_9)) {
+		uniqueTypes.push(maint.GIS_MAPB_9);
 	}
 	});
 
@@ -386,10 +467,10 @@ function createSliderUI(dataLayer, currentYear) {
 	// change the display property for each circle
 	facilities.style('display', d => {
 	if (val === 'All Facilities') return 'inline';
-	if (d.Industry_Type != val) return 'none';
+	if (d.GIS_MAPB_9 != val) return 'none';
 	});
 	d3.select('#ui > a').html(val);  // update the UI with current val
-	}}
+	}} */
 /*
 		const buildingLayer = $.getJSON("data/UK_Building_Facility.json", function (data) {
 			// jQuery method uses AJAX request for the GeoJSON data
