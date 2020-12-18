@@ -102,7 +102,7 @@
 			clear: both;
 		}
 
-		#ui {
+		#ui-menu {
 			position: absolute;
 			z-index: 10000;
 			right: 1em;
@@ -141,6 +141,40 @@
 			width: 100%;
 		}
 
+.leaflet-tooltip-left:before {
+    right: 0;
+    margin-right: -12px;
+    border-left-color: rgba(0, 0, 0, 0.4);
+}
+
+.leaflet-tooltip-right:before {
+    left: 0;
+    margin-left: -12px;
+    border-right-color: rgba(0, 0, 0, 0.4);
+    }
+
+.leaflet-tooltip-own {
+    position: absolute;
+    padding: 5px;
+	background-color: rgba(0, 0, 0, 0.4);
+    border: 0px solid #000;
+    color: #000;
+	white-space: nowrap;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+.leaflet-tooltip img {
+	max-width: 200px;
+	max-height: 200px;
+	border-radius: 10%;
+}
+
+
 		/* Small devices (landscape phones, 576px and up) */
 		@media (min-width: 576px) {}
 
@@ -171,8 +205,8 @@
 
 		<section class="row">
 			<div class="col-md-9 col-lg-9 col-xl-9 order-md-2 px-0">
-				<div id="map">
-				<div id="ui" class="dropdown">
+				<div id='map'>
+				<div id="ui-menu" class="dropdown">
 					<a class="btn btn-light text-secondary font-weight-bold dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						All Building Types
@@ -185,7 +219,7 @@
 						value="2020", step="10" class="year-slider" ></input>
 					</label>  
 				</div>
-				<!-- ui grade level -->
+				<!-- ui construction year date -->
 				<div id='year' class="text-light font-weight-bold">
 					<label><img src="graphics/dashed-line.png" width="20px" height="20px"> UK Property</br>
 					</br>
@@ -279,8 +313,8 @@
 		maxZoom: 18
 	}).addTo(map);
 		
-		// move zoom control to the bottom right
-		//new L.control.zoom({position:"bottomright"}).addTo(map)
+	// move zoom control to the bottom right
+	//new L.control.zoom({position:"bottomright"}).addTo(map)
 
 	//add 2020 UK property boundary layer
 	const property = $.getJSON("data/uk_property.geojson", function (data) {
@@ -343,7 +377,7 @@
 
         const props = layer.feature.properties;
 
-        // build the tooltip 
+        /*// build the tooltip 
 		const tooltip = `<p align="center"><label><b><u>${props['GIS_MAPB_2']}  (#${props['BuildingID']})</u></b><br/>
 		${props['GIS_MAPB_4']}, Lexington, KY ${props['GIS_MAPB_5']}<br/>
 		<b>Maintenance Area:</b> ${props['GIS_MAPB_9']}<br/>
@@ -355,7 +389,24 @@
         //bind the tooltup to the layer
         layer.bindTooltip(tooltip, {
 			sticky: true
-		}); 
+		}); */
+
+		layer.bindTooltip("<div style='background:white; padding: 10px 5px 5px 5px'>" + 
+			`<p align="center"><label><b><u>${props['GIS_MAPB_2']}  (#${props['BuildingID']})</u></b><br/>
+				${props['GIS_MAPB_4']}, Lexington, KY ${props['GIS_MAPB_5']}<br/>
+				<b>Maintenance Area:</b> ${props['GIS_MAPB_9']}<br/>
+				<b>Constructed:</b> ${props['UK_Build_3']}<br/>
+				<b>Acquired:</b> ${props['UK_Build_4']}</br>
+				<img class="col-md-12" src="https://maps.uky.edu/campusmap/bldg/${props['BuildingID']}.jpg"></label></p>` + "</div>",
+		{
+			direction: 'right',
+			permanent: false,
+			sticky: true,
+			offset: [10, 0],
+			align: 'center',
+			opacity: 1,
+			className: 'leaflet-tooltip-own' 
+		});
 
 		layer.on("mouseover", function () {
                     layer.bringToFront();
@@ -403,6 +454,7 @@
     	// add the control to the map
 		sliderControl.addTo(map);
 
+		// add legend and year display showing the year selected
 		var yearControl = L.control({
 			position: 'bottomleft'
 		});
@@ -427,7 +479,8 @@
 				$('.legend h3 span').html(currentYear); // update the map with current timestamp
 				updateMap(dataLayer, currentYear); // update timestamp in legend heading
         	});
-	} // end createSliderUI() */
+	} 
+	// end createSliderUI() */
 	
 	/* function filterByAttribute(dataLayer, buildings) {
 	// array to hold select options
