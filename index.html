@@ -368,6 +368,74 @@
 			const props = layer.feature.properties;
 			currentYear = Number(currentYear); 
 			yearBuilt = Number(props["UK_Build_3"]);
+			// console.log(currentYear)
+
+			if (yearBuilt <= currentYear) {
+				
+				layer.setStyle({
+						opacity: 1,
+						fillOpacity: 1
+					})
+
+						layer.bindTooltip("<div style='background:white; padding: 10px 5px 5px 5px'>" + 
+					`<p align="center"><label><b><u>${props['GIS_MAPB_2']}  (#${props['BuildingID']})</u></b><br/>
+						${props['GIS_MAPB_4']}, Lexington, KY ${props['GIS_MAPB_5']}<br/>
+						<b>Usage Area:</b> ${props['GIS_MAPB_9']}<br/>
+						<b>Constructed:</b> ${props['UK_Build_3']}<br/>
+						<b>Acquired:</b> ${props['UK_Build_4']}</br>
+						<img class="col-md-12" src="https://maps.uky.edu/campusmap/bldg/${props['BuildingID']}.jpg"></label></p>` + "</div>",
+				{
+					direction: 'right',
+					permanent: false,
+					sticky: true,
+					offset: [10, 0],
+					align: 'center',
+					opacity: 1,
+					className: 'leaflet-tooltip-own' 
+				});
+
+				layer.on("mouseover", function () {
+							layer.bringToFront();
+							layer.setStyle({
+								color: "yellow",
+								weight: 2,
+								opacity: 1,
+								fillOpacity: 1
+							});
+						});
+
+						layer.on("mouseout", function () {
+							layer.bringToBack();
+							layer.setStyle({
+								color: '#20282e',
+								weight: 1,
+								fillOpacity: 1,
+								fillColor: "#1f78b4",
+							});
+						});
+				} else {
+					layer.setStyle({
+						opacity: 0,
+						fillOpacity: 0
+					})
+
+					layer.unbindTooltip()
+
+					layer.on("mouseover", function(){
+						layer.setStyle({
+						opacity: 0,
+						fillOpacity: 0
+						})
+					})
+
+					layer.on("mouseout", function(){
+						layer.setStyle({
+						opacity: 0,
+						fillOpacity: 0
+						})
+					})
+				}
+			})
 
         /*// build the tooltip 
 		const tooltip = `<p align="center"><label><b><u>${props['GIS_MAPB_2']}  (#${props['BuildingID']})</u></b><br/>
@@ -383,41 +451,7 @@
 			sticky: true
 		}); */
 
-		layer.bindTooltip("<div style='background:white; padding: 10px 5px 5px 5px'>" + 
-			`<p align="center"><label><b><u>${props['GIS_MAPB_2']}  (#${props['BuildingID']})</u></b><br/>
-				${props['GIS_MAPB_4']}, Lexington, KY ${props['GIS_MAPB_5']}<br/>
-				<b>Usage Area:</b> ${props['GIS_MAPB_9']}<br/>
-				<b>Constructed:</b> ${props['UK_Build_3']}<br/>
-				<b>Acquired:</b> ${props['UK_Build_4']}</br>
-				<img class="col-md-12" src="https://maps.uky.edu/campusmap/bldg/${props['BuildingID']}.jpg"></label></p>` + "</div>",
-		{
-			direction: 'right',
-			permanent: false,
-			sticky: true,
-			offset: [10, 0],
-			align: 'center',
-			opacity: 1,
-			className: 'leaflet-tooltip-own' 
-		});
-
-		layer.on("mouseover", function () {
-                    layer.bringToFront();
-                    layer.setStyle({
-                        color: "yellow",
-                        weight: 2,
-                    });
-                });
-
-                layer.on("mouseout", function () {
-                    layer.bringToBack();
-                    layer.setStyle({
-						color: '#20282e',
-						weight: 1,
-						fillOpacity: .75,
-						fillColor: "#1f78b4",
-                    });
-                });
-		});
+		
 	}; // end updateMap()
 
 	// Add slider to the map
