@@ -316,6 +316,8 @@
 	// move zoom control to the bottom right
 	//new L.control.zoom({position:"bottomright"}).addTo(map)
 
+	var currentYear = 2020;
+
 	//add 2020 UK property boundary layer
 	const property = $.getJSON("data/uk_property.geojson", function (data) {
 		const propLayer = L.geoJson(data, {
@@ -351,6 +353,7 @@
 
 	function drawMap(buildings) {
 		console.log(buildings);
+		
 		const dataLayer = L.geoJson(buildings, {
 			style: function (feature) {
 				return {
@@ -362,21 +365,34 @@
 			},
 		}).addTo(map); 
 		// var zoomExtent = dataLayer.getBounds();
-
 		//create the slider
 		// filterByAttribute(dataLayer, buildings);
 		createSliderUI(dataLayer);
 		console.log(dataLayer);
       	// call the initially color the map with first timestamp
-		updateMap(dataLayer,'2020');
+		updateMap(dataLayer, currentYear);
+		updateYear(dataLayer, currentYear);
     }
+
+	function updateYear(dataLayer, currentYear) {
+		var output = $('#year label span');
+
+		$('.year-slider');
+
+		.on('input change', function(){
+			currentYear = $(this).val();
+			output.html(currentYear);
+			updateMap(dataLayer, currentYear)
+		});
+	}
 
     function updateMap(dataLayer, currentYear) {
     	// loop through each county layer to update the color 
 		dataLayer.eachLayer(function (layer) {
 
-        const props = layer.feature.properties;
-
+			const props = layer.feature.properties;
+			currentYear = Number(currentYear); 
+			yearBuilt = Number(props["UK_Build_3"]);
         /*// build the tooltip 
 		const tooltip = `<p align="center"><label><b><u>${props['GIS_MAPB_2']}  (#${props['BuildingID']})</u></b><br/>
 		${props['GIS_MAPB_4']}, Lexington, KY ${props['GIS_MAPB_5']}<br/>
@@ -397,7 +413,7 @@
 				<b>Maintenance Area:</b> ${props['GIS_MAPB_9']}<br/>
 				<b>Constructed:</b> ${props['UK_Build_3']}<br/>
 				<b>Acquired:</b> ${props['UK_Build_4']}</br>
-				<img class="col-md-12" src="https://maps.uky.edu/campusmap/bldg/${props['BuildingID']}.jpg"></label></p>` + "</div>",
+				<img class="col-md-12" sr;c="https://maps.uky.edu/campusmap/bldg/${props['BuildingID']}.jpg"></label></p>` + "</div>",
 		{
 			direction: 'right',
 			permanent: false,
