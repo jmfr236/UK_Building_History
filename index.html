@@ -214,8 +214,9 @@
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuLink"></div>
 				</div>
 				<div id="ui-controls" class="bg-light text-secondary font-weight-bold">
-					<label><span class="min">1865</span><span class="max">2020</span>
-					<input type="range" min="1865", max="2020",
+					<label><span class="min">1860</span>
+						<span class="max">2020</span>
+						<input type="range" min="1860", max="2020",
 						value="2020", step="10" class="year-slider" ></input>
 					</label>  
 				</div>
@@ -288,10 +289,10 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>
 	
-	// map options, centered on Lexington, KY
+	// map options
 	const options = {
 		zoomSnap: .1,
-		center: [38.027, -84.504],
+		center: [38.027, -84.504], //centered on University of Kentucky campus
 		zoom: 14.5,
 		minZoom: 12,
 		maxZoom: 18,
@@ -312,15 +313,13 @@
 		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
 		maxZoom: 18
 	}).addTo(map);
-		
-	// move zoom control to the bottom right
-	//new L.control.zoom({position:"bottomright"}).addTo(map)
+	
+	// global variables
+	const currentYear = 2020;
 
-	var currentYear = 2020;
-
-	//add 2020 UK property boundary layer
-	const property = $.getJSON("data/uk_property.geojson", function (data) {
-		const propLayer = L.geoJson(data, {
+	//add UK property boundary layer using JQuery getJSON() method
+	$.getJSON("data/uk_property.geojson", function (data) {
+		const property = L.geoJson(data, {
 			style: function (feature) {
 				return {
 					color: 'black',
@@ -332,28 +331,19 @@
 		}).addTo(map);
 	});
 
-	// add UK buildings layer
+	// add UK buildings layer using JQuery getJSON() method
 	$.getJSON("data/uk_buildings.geojson", function (buildings) {
 		console.log(buildings);
-		/* const dataLayer = L.geoJson(buildings, {
-			style: function (feature) {
-				return {
-				color: '#20282e',
-				weight: 1,
-				fillOpacity: .75,
-				fillColor: "#1f78b4",
-				};
-			},
-		}); 
-		// var zoomExtent = dataLayer.getBounds();
-		dataLayer.addTo(map);*/
+
+		//call drawMap() function
 		drawMap(buildings); 
 	});
 	
-
+	// draw building geoJson layer, call createSliderUI() and updateMap() functions
 	function drawMap(buildings) {
 		console.log(buildings);
 		
+		// set building layer style and add to map
 		const dataLayer = L.geoJson(buildings, {
 			style: function (feature) {
 				return {
@@ -364,27 +354,19 @@
 				};
 			},
 		}).addTo(map); 
-		// var zoomExtent = dataLayer.getBounds();
-		//create the slider
-		// filterByAttribute(dataLayer, buildings);
-		createSliderUI(dataLayer);
+
 		console.log(dataLayer);
-      	// call the initially color the map with first timestamp
+	
+		// create slider - call createSliderUI() function
+		createSliderUI(dataLayer);
+		// filterByAttribute(dataLayer, buildings);
+
+		// call updateMap() function 
 		updateMap(dataLayer, currentYear);
-		updateYear(dataLayer, currentYear);
+
+		// call updateYear() function when slider changed
+		updateYear(dataLayer, currentYear)
     }
-
-	function updateYear(dataLayer, currentYear) {
-		var output = $('#year label span');
-
-		$('.year-slider');
-
-		.on('input change', function(){
-			currentYear = $(this).val();
-			output.html(currentYear);
-			updateMap(dataLayer, currentYear)
-		});
-	}
 
     function updateMap(dataLayer, currentYear) {
     	// loop through each county layer to update the color 
@@ -413,7 +395,7 @@
 				<b>Maintenance Area:</b> ${props['GIS_MAPB_9']}<br/>
 				<b>Constructed:</b> ${props['UK_Build_3']}<br/>
 				<b>Acquired:</b> ${props['UK_Build_4']}</br>
-				<img class="col-md-12" sr;c="https://maps.uky.edu/campusmap/bldg/${props['BuildingID']}.jpg"></label></p>` + "</div>",
+				<img class="col-md-12" src="https://maps.uky.edu/campusmap/bldg/${props['BuildingID']}.jpg"></label></p>` + "</div>",
 		{
 			direction: 'right',
 			permanent: false,
@@ -442,9 +424,9 @@
                     });
                 });
 		});
-	};
- // end updateMap()
+	}; // end updateMap()
 
+	// Add slider to the map
 	function createSliderUI(dataLayer) {
       // create Leaflet control for the slider
 		const sliderControl = L.control({ 
@@ -469,34 +451,43 @@
 
     	// add the control to the map
 		sliderControl.addTo(map);
-
-		// add legend and year display showing the year selected
+	} // end createSliderUI()
+	
+	// add legend and year display showing the year selected
+	function updateYear(dataLayer, currentYear) {
+		// create leaflet control for year and legend display
 		var yearControl = L.control({
 			position: 'bottomleft'
 		});
 
+		//When added to the map
 		yearControl.onAdd = function (map) {
 
+			// select an existing DOM element with an id of "year"
 			var controls = L.DomUtil.get("year");
 
+			// disable scrolling of map while using controls
 			L.DomEvent.disableScrollPropagation(controls);
+
+			// disable click events while using controls
 			L.DomEvent.disableClickPropagation(controls);
 
+			// return the legend and year display from the onAdd method
 			return controls;
 
 		}
 
-		yearControl.addTo(map);
+		// add the control to the map
+		yearControl.addTo(map); 
 
       // select the form element
 		$(".year-slider")
         	.on("input change", function() { // when user changes
 				const currentYear = $(this).val(); // update the year
-				$('.legend h3 span').html(currentYear); // update the map with current timestamp
+				$('#year label span').html(currentYear); // update the map with current timestamp
 				updateMap(dataLayer, currentYear); // update timestamp in legend heading
-        	});
-	} 
-	// end createSliderUI() */
+			});
+	} // end updateYear()
 	
 	/* function filterByAttribute(dataLayer, buildings) {
 	// array to hold select options
@@ -586,6 +577,7 @@
 			// call draw map function and send data as parameter
 			//drawMap(data);
 		//});
+
 		/*
 		function drawMap(data) {
 			console.log(data); // data os now accessible here
@@ -628,87 +620,6 @@
 			updateLegend(breaks);
 		}
 
-		//Get class breaks in data
-		function getClassBreaks(counties) {
-
-  			// create empty Array for storing values
-			const values = [];
-
-			// loop through all the counties
-			counties.eachLayer(function (layer) {
-				let value = layer.feature.properties[attributeValue] / layer.feature.properties[normValue];
-  				values.push(value); // push the normalized value for each layer into the Array
-			});
-
-			// determine similar clusters
-			const clusters = ss.ckmeans(values, 5);
-
-			// create an array of the lowest value within each cluster
-			const breaks = clusters.map(function (cluster) {
-				return [cluster[0], cluster.pop()];
-			});
-
-			//return array of arrays, e.g., [[0.24,0.25], [0.26, 0.37], etc]
-			return breaks;
-		}
-
-		// Get color of county
-		function getColor(d, breaks) {
-			// function accepts a single normalized data attribute value
-			// and uses a series of conditional statements to determine which
-			// which color value to return to return to the function caller
-
-			if (d <= breaks[0][1]) {
-				return '#f1eef6';
-			} else if (d <= breaks[1][1]) {
-				return '#bdc9e1';
-			} else if (d <= breaks[2][1]) {
-				return '#74a9cf';
-			} else if (d <= breaks[3][1]) {
-				return '#2b8cbe'
-			} else if (d <= breaks[4][1]) {
-				return '#045a8d'
-			}
-		}
-
-		function addLegend(breaks) {
-  			// create a new Leaflet control object, and position it top left
-			const legendControl = L.control({ position: 'topleft' });
-
-  			// when the legend is added to the map
-			legendControl.onAdd = function() {
-
-				// select a div element with an id attribute of legend
-				const legend = L.DomUtil.get('legend');
-
-				// disable scroll and click/touch on map when on legend
-				L.DomEvent.disableScrollPropagation(legend);
-				L.DomEvent.disableClickPropagation(legend);
-
-				// return the selection to the method
-				return legend;
-			};
-
-			// add the empty legend div to the map
-			legendControl.addTo(map);
-		}
-
-		function updateLegend(breaks) {
-
-			// select the legend, add a title, begin an unordered list and assign to a variable
-			const legend = $('#legend').html(`<h5>${labels[attributeValue]}</h5>`);
-
-			// loop through the Array of classification break values
-			for (let i = 0; i <= breaks.length - 1; i++) {
-
-				let color = getColor(breaks[i][0], breaks);
-
-				legend.append(
-					`<span style="background:${color}"></span>
-					<label>${(breaks[i][0] * 100).toFixed(1)} &mdash;
-					${(breaks[i][1] * 100).toFixed(1)}%</label><br>`);
-			}
-		}
 
 		function addUi(counties) {
 			console.log(counties)
