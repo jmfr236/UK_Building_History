@@ -182,6 +182,22 @@
 		<section class="row">
 			<div class="col-md-9 col-lg-9 col-xl-9 order-md-2 px-0">
 				<div id='map'>
+					<!-- ui dropdown menu-->
+				<div id="ui-menu" class="dropdown">
+					<a class="btn btn-light text-secondary font-weight-bold dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						All Building Types
+					</a>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+						<a id="athletics" class="dropdown-item" href="#">Athletics</a>
+						<a id="campus" class="dropdown-item" href="#">Campus</a>
+						<a id="greek" class="dropdown-item" href="#">Greek Life</a>
+						<a id="housing" class="dropdown-item" href="#">Housing</a>
+						<a id="medical" class="dropdown-item" href="#">Medical</a>
+						<a id="other" class="dropdown-item" href="#">Other</a>
+						<a id="transportation" class="dropdown-item" href="#">Transportation</a>
+					</div>
+				</div>
 				<!-- ui slider element -->
 				<div id="ui-controls" class="bg-light text-secondary font-weight-bold">
 					<label><span class="min">1860</span>
@@ -404,7 +420,7 @@
 							});
 						});
 
-						layer.on("mouseout", function () {
+				layer.on("mouseout", function () {
 							layer.bringToBack();
 							layer.setStyle({
 								color: '#20282e',
@@ -436,22 +452,6 @@
 					})
 				}
 			})
-
-        /*// build the tooltip 
-		const tooltip = `<p align="center"><label><b><u>${props['GIS_MAPB_2']}  (#${props['BuildingID']})</u></b><br/>
-		${props['GIS_MAPB_4']}, Lexington, KY ${props['GIS_MAPB_5']}<br/>
-		<b>Maintenance Area:</b> ${props['GIS_MAPB_9']}<br/>
-		<b>Constructed:</b> ${props['UK_Build_3']}<br/>
-		<b>Acquired:</b> ${props['UK_Build_4']}<br/></p>
-		<img class="col-md-12" src="https://maps.uky.edu/campusmap/bldg/${props['BuildingID']}.jpg"</label></p>`
-		// Set up formula to if only show acquired if constructed and acquired are not the same
-
-        //bind the tooltup to the layer
-        layer.bindTooltip(tooltip, {
-			sticky: true
-		}); */
-
-		
 	}; // end updateMap()
 
 	// Add slider to the map
@@ -517,10 +517,10 @@
 			});
 	} // end updateYear()
 	
-	/* function filterByAttribute(dataLayer, buildings) {
+	function filterByAttribute(dataLayer, buildings) {
 	// array to hold select options
 	var uniqueTypes = [];
-
+		
 	// loop through all features and push unique types to array
 	dataLayer.forEach(function (maint) {
 	if (!uniqueTypes.includes(maint.GIS_MAPB_9)) {
@@ -533,7 +533,9 @@
 
 	// add an all facilities to the beginning
 	uniqueTypes.unshift('All Facilities');
-
+	console.log(maint.GIS_MAPB_9)
+}
+	/*
 	// select all the options (that don't exist yet)
 	d3.select('#ui .dropdown-menu').selectAll('a')
 	.data(uniqueTypes) // use array as data
