@@ -189,13 +189,13 @@
 						All Building Types
 					</a>
 					<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-						<a id="athletics" class="dropdown-item" href="#">Athletics</a>
+						<!-- <a id="athletics" class="dropdown-item" href="#">Athletics</a>
 						<a id="campus" class="dropdown-item" href="#">Campus</a>
 						<a id="greek" class="dropdown-item" href="#">Greek Life</a>
 						<a id="housing" class="dropdown-item" href="#">Housing</a>
 						<a id="medical" class="dropdown-item" href="#">Medical</a>
 						<a id="other" class="dropdown-item" href="#">Other</a>
-						<a id="transportation" class="dropdown-item" href="#">Transportation</a>
+						<a id="transportation" class="dropdown-item" href="#">Transportation</a> -->
 					</div>
 				</div>
 				<!-- ui slider element -->
@@ -374,7 +374,9 @@
 		updateMap(dataLayer, currentYear);
 
 		// call updateYear() function when slider changed
-		updateYear(dataLayer, currentYear)
+		updateYear(dataLayer, currentYear);
+
+		filterByAttribute(dataLayer);
     }
 
     function updateMap(dataLayer, currentYear) {
@@ -516,51 +518,54 @@
 				updateMap(dataLayer, currentYear); // update timestamp in legend heading
 			});
 	} // end updateYear()
-	
-	function filterByAttribute(dataLayer, buildings) {
-	// array to hold select options
-	var uniqueTypes = [];
+
+	function filterByAttribute(dataLayer) {
+		// array to hold select options
+
+		dataLayer.getLayers()
+		var uniqueTypes = [];
 		
-	// loop through all features and push unique types to array
-	dataLayer.forEach(function (maint) {
-	if (!uniqueTypes.includes(maint.GIS_MAPB_9)) {
-		uniqueTypes.push(maint.GIS_MAPB_9);
+		// loop through all features and push unique types to array
+		dataLayer.forEach(function (maint) {
+		if (!uniqueTypes.includes(maint.GIS_MAPB_9)) {
+			uniqueTypes.push(maint.GIS_MAPB_9);
+		}
+		});
+
+		// sort strings alphabetically
+		uniqueTypes.sort();
+
+		// add an all facilities to the beginning
+		uniqueTypes.unshift('All Building Types');
+		console.log(maint.GIS_MAPB_9)
+
+		// select all the options (that don't exist yet)
+		d3.select('#ui-menu .dropdown-menu').selectAll('a')
+		.data(uniqueTypes) // use array as data
+		.join('a') // append a new option element for each data item
+		.text(d => {
+			return d // use the item as text
+		})
+		.attr('value', d => {
+			return d // use the time as value attribute
+		})
+		.attr('href', '#')
+		.classed('dropdown-item', true)
+		.on('click', onchange);  // when the user clicks call onchange function
+
+		function onchange() {
+		// get the currently selected value
+		let val = d3.select(this).attr('value');
+		
+		// change the display property for each circle
+		facilities.style('display', d => {
+		if (val === 'All Building Types') return 'inline';
+		if (d.GIS_MAPB_9 != val) return 'none';
+		});
+		d3.select('#ui-menu > a').html(val);  // update the UI with current val
+		}
 	}
-	});
-
-	// sort strings alphabetically
-	uniqueTypes.sort();
-
-	// add an all facilities to the beginning
-	uniqueTypes.unshift('All Facilities');
-	console.log(maint.GIS_MAPB_9)
-}
-	/*
-	// select all the options (that don't exist yet)
-	d3.select('#ui .dropdown-menu').selectAll('a')
-	.data(uniqueTypes) // use array as data
-	.join('a') // append a new option element for each data item
-	.text(d => {
-		return d // use the item as text
-	})
-	.attr('value', d => {
-		return d // use the time as value attribute
-	})
-	.attr('href', '#')
-	.classed('dropdown-item', true)
-	.on('click', onchange);  // when the user clicks call onchange function
-
-	function onchange() {
-	// get the currently selected value
-	let val = d3.select(this).attr('value');
 	
-	// change the display property for each circle
-	facilities.style('display', d => {
-	if (val === 'All Facilities') return 'inline';
-	if (d.GIS_MAPB_9 != val) return 'none';
-	});
-	d3.select('#ui > a').html(val);  // update the UI with current val
-	}} */
 /*
 		const buildingLayer = $.getJSON("data/UK_Building_Facility.json", function (data) {
 			// jQuery method uses AJAX request for the GeoJSON data
