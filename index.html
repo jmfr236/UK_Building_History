@@ -554,16 +554,43 @@
 		.on('click', onchange);  // when the user clicks call onchange function
 
 		function onchange() {
-		// get the currently selected value
-		let val = d3.select(this).attr('value');
+			// get the currently selected value
+			let val = d3.select(this).attr('value');
+
+			dataLayer.eachLayer(function (maint) {
+				const props = maint.feature.properties
+				if (val != props.GIS_MAPB_9) {
+					maint.setStyle({
+						stroke: false,
+						fill: false
+					})
+
+				} else {
+					maint.setStyle({
+						stroke: true,
+						fill: true
+					})
+				}
+
+				if (val == 'All Building Types' ) { 
+
+				maint.setStyle({
+					stroke: true,
+					fill: true
+					});
+				}
+
+
+			d3.select('#ui-menu > a').html(val);  // update the UI with current val
 		
 		// change the display property for each circle
-		dataLayer.style('display', d => {
-		if (val === 'All Building Types') return 'inline';
-		if (d.GIS_MAPB_9 != val) return 'none';
-		});
-		d3.select('#ui-menu > a').html(val);  // update the UI with current val
-		}
+		// dataLayer.style('display', d => {
+		// if (val === 'All Building Types') return 'inline';
+		// if (d.GIS_MAPB_9 != val) return 'none';
+		// });
+		// d3.select('#ui-menu > a').html(val);  // update the UI with current val
+		})
+	}
 	}
 	
 /*
