@@ -273,6 +273,7 @@
 		crossorigin=""></script>
 	<!-- then jQuery slider -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://d3js.org/d3.v6.min.js"></script>
 	<script>
 	
 	// map options
@@ -341,8 +342,6 @@
 			},
 		}).addTo(map); 
 
-		console.log(dataLayer);
-	
 	/* selection menu - will work on if time allows - struggle with UI slider and dropdown so thought 
 	doing a selection menu might be simpler
 		const athleticLayer = L.geoJson(buildings, dataLayer).addTo(map);
@@ -522,14 +521,15 @@
 	function filterByAttribute(dataLayer) {
 		// array to hold select options
 
-		dataLayer.getLayers()
+		// dataLayer.getLayers()
 		var uniqueTypes = [];
 		
 		// loop through all features and push unique types to array
-		dataLayer.forEach(function (maint) {
-		if (!uniqueTypes.includes(maint.GIS_MAPB_9)) {
-			uniqueTypes.push(maint.GIS_MAPB_9);
-		}
+		dataLayer.eachLayer(function (maint) {
+			const props = maint.feature.properties
+			if (!uniqueTypes.includes(props.GIS_MAPB_9)) {
+				uniqueTypes.push(props.GIS_MAPB_9);
+			}
 		});
 
 		// sort strings alphabetically
@@ -537,7 +537,7 @@
 
 		// add an all facilities to the beginning
 		uniqueTypes.unshift('All Building Types');
-		console.log(maint.GIS_MAPB_9)
+		// console.log(maint.GIS_MAPB_9)
 
 		// select all the options (that don't exist yet)
 		d3.select('#ui-menu .dropdown-menu').selectAll('a')
@@ -558,7 +558,7 @@
 		let val = d3.select(this).attr('value');
 		
 		// change the display property for each circle
-		facilities.style('display', d => {
+		dataLayer.style('display', d => {
 		if (val === 'All Building Types') return 'inline';
 		if (d.GIS_MAPB_9 != val) return 'none';
 		});
