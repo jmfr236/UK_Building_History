@@ -290,16 +290,20 @@
 	const map = L.map('map', options);
 
 	// mapbox API access Token
-	// mapbox API parameters
-	const accessToken = `pk.eyJ1Ijoiam1mcjIzNiIsImEiOiJja2g3dnM0MHAwZDJrMnBrMTFzMWdoODFwIn0.zy_4IRy1IBZR3ojoFOsiFA`
-	const yourName = 'jmfr236'
-	const yourMap = 'ckidrdhek2d6w19m4sf5kvqlx'
+// mapbox API parameters
+const accessToken = `pk.eyJ1Ijoiam1mcjIzNiIsImEiOiJja3c0Yzg5MWw4dHdvMzFzMXI2bGw0Z28wIn0.h1s6bozXOvBTStSlxGe0LA`;
+const yourName = 'jmfr236';
+const yourMap = 'ckw4ellrb0dy714o11r7tg1wt';
 
-  	// request a mapbox raster tile layer and add to map
-	L.tileLayer(`https://api.mapbox.com/styles/v1/${yourName}/${yourMap}/tiles/256/{z}/{x}/{y}?access_token=${accessToken}`, {
-		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-		maxZoom: 18
-	}).addTo(map);
+// request a mapbox raster tile layer and add to map
+L.tileLayer(
+  `https://api.mapbox.com/styles/v1/${yourName}/${yourMap}/tiles/256/{z}/{x}/{y}?access_token=${accessToken}`,
+  {
+    attribution:
+      'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    maxZoom: 18,
+  }
+).addTo(map);
 	
 	// global variables
 	const currentYear = 2020;
